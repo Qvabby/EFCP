@@ -14,6 +14,13 @@ namespace EFCP.Data
         public DbSet<Blog> Blogs { get; set; }
         //This is already Configured In Book Model.
         public DbSet<Book> Books { get; set; }
+        public DbSet<User> Users { get; set; }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlServer(
+                @"Server=(localdb)\mssqllocaldb;Database=EFCPractice;Trusted_Connection=True;ConnectRetryCount=0");
+        }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             //base.OnModelCreating(modelBuilder);
@@ -28,6 +35,7 @@ namespace EFCP.Data
 
             //Or we can configure it like this.
             //modelBuilder.Entity<Book>();
+            //modelBuilder.Entity<User>();
 
         }
     }
