@@ -9,11 +9,11 @@ namespace EFCP.Interfaces
 {
     public interface IUserServiceInterface
     {
-        public void AddUser(UserDto userDto);
-        public void UpdateUser(UserDto userDto, int id);
-        public void DeleteUser(int id);
-        public Task<UserDto> GetUser(int id);
-        public Task<List<UserDto>> GetUsers();
+        public Task AddUserAsync(UserDto userDto);
+        public Task UpdateUserAsync(UserDto userDto, int id);
+        public Task DeleteUserAsync(int id);
+        public Task<UserDto> GetUserAsync(int id);
+        public Task<List<UserDto>> GetUsersAsync();
 
     }
 }

@@ -17,99 +17,109 @@ namespace EFCP.Services
     {
         EFCPDbContext _dbContext;
         IMapper _mapper;
+        ConsoleMessagesWriter _writer = new ConsoleMessagesWriter();
         public UserService(EFCPDbContext dbcontext, IMapper mapper) { _dbContext = dbcontext; _mapper = mapper; }
-        public void AddUser(UserDto userDto)
+        public async Task AddUserAsync(UserDto userDto)
         {
             try
             {
                 var user = _mapper.Map<User>(userDto);
-                _dbContext.Add(user);
-                _dbContext.SaveChanges();
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine($"{user.ToString()}");
-                Console.ResetColor();
+                await _dbContext.AddAsync(user);
+                await _dbContext.SaveChangesAsync();
+                _writer.WriteSuccessMessage($"{user.ToString()}");
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                _writer.WriteErrorMessage(e.Message);
             }
-            
         }
 
-        public void DeleteUser(int id)
-        {
-            try
-            {
-                var user = _dbContext.Users
-                .FirstOrDefault(x => x.Id == id);
-
-                _dbContext.Users.Remove(user);
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine("Succesfully Removed User.");
-                Console.ResetColor();
-                _dbContext.SaveChanges();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-            
-        }
-
-        public async Task<UserDto> GetUser(int id)
+        public async Task DeleteUserAsync(int id)
         {
             try
             {
                 var user = await _dbContext.Users
                 .FirstOrDefaultAsync(x => x.Id == id);
+                if (user == null)
+                {
+                    _writer.WriteErrorMessage("User not found.");
+                    return;
+                }
+                _dbContext.Users.Remove(user);
+                await _dbContext.SaveChangesAsync();
+                _writer.WriteSuccessMessage("Succesfully Removed User.");
+            }
+            catch (Exception e)
+            {
+                _writer.WriteErrorMessage(e.Message);
+            }
+
+        }
+
+        public async Task<UserDto> GetUserAsync(int id)
+        {
+            try
+            {
+                var user = await _dbContext.Users
+                .FirstOrDefaultAsync(x => x.Id == id);
+                if (user == null)
+                {
+                    _writer.WriteErrorMessage("User not found.");
+                    return null;
+                }
                 var userDto = _mapper.Map<UserDto>(user);
+                _writer.WriteSuccessMessage("Succesfully Fetched User.");
                 return userDto;
             }
             catch (Exception e)
             {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine(e.Message);
-                Console.ResetColor();
+                _writer.WriteErrorMessage($"{e.Message}");
             }
             return null;
         }
 
-        public async Task<List<UserDto>> GetUsers()
+        public async Task<List<UserDto>> GetUsersAsync()
         {
             try
             {
                 var users = await _dbContext.Users.ToListAsync();
+                if (users == null)
+                {
+                    _writer.WriteErrorMessage("Users not found.");
+                    return null;
+                }
                 var userDtos = _mapper.Map<List<UserDto>>(users);
                 return userDtos;
             }
             catch (Exception e)
             {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine(e.Message);
-                Console.ResetColor();
+                _writer.WriteErrorMessage($"{e.Message}");
             }
             return null;
         }
 
-        public void UpdateUser(UserDto userDto, int id)
+        public async Task UpdateUserAsync(UserDto userDto, int id)
         {
             try
             {
-                var user = _dbContext.Users.FirstOrDefault(x => x.Id == id);
+                var user = await _dbContext.Users.FirstOrDefaultAsync(x => x.Id == id);
+                if (user == null)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("User not found.");
+                    Console.ResetColor();
+                    return;
+                }
                 user.Name = userDto.Name;
                 user.Email = userDto.Email;
                 user.Age = userDto.Age;
                 user.Lastname = userDto.Lastname;
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine("Succesfully Updated User.");
-                Console.ResetColor();
-                _dbContext.SaveChanges();
+                _writer.WriteSuccessMessage("Succesfully Updated User.");
+                await _dbContext.SaveChangesAsync();
             }
             catch (Exception e)
             {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine(e.Message);
-                Console.ResetColor();
+                _writer.WriteErrorMessage(e.Message);
             }
         }
     }
