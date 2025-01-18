@@ -10,7 +10,7 @@ namespace EFCP.Services
 {
     public class ConsoleMessagesWriter : IConsoleMessagesWriter
     {
-        ConsoleOutputVisualizer visualizer;
+        ConsoleOutputVisualizer visualizer = new ConsoleOutputVisualizer();
         public void WriteErrorMessage(string message)
         {
             visualizer.Qdanger(message);

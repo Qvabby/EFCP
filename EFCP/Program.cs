@@ -21,13 +21,19 @@ namespace EFCP
             EFCPDbContext db = new EFCPDbContext();
             UserService userService = new UserService(db, mapper);
 
-            var user = new UserDto
-            {
-                Name = "Jemali2",
-                Lastname = "Salukvadze",
-                Age = 18,
-                Email = "Saluqvadze2006@gmail.com"
-            };
+
+            MenuService menuService = new MenuService();
+            menuService.Menu();
+
+
+
+            //var user = new UserDto
+            //{
+            //    Name = "Jemali2",
+            //    Lastname = "Salukvadze",
+            //    Age = 18,
+            //    Email = "Saluqvadze2006@gmail.com"
+            //};
 
             //await userService.AddUserAsync(user);
             //await userService.DeleteUserAsync(2);
