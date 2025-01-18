@@ -3,6 +3,7 @@ using EFCP.Data;
 using EFCP.models.Dtos;
 using EFCP.models;
 using EFCP.Services;
+using qvabbytesD1;
 
 namespace EFCP
 {
@@ -28,7 +29,7 @@ namespace EFCP
                 Email = "Saluqvadze2006@gmail.com"
             };
 
-            await userService.AddUserAsync(user);
+            //await userService.AddUserAsync(user);
             //await userService.DeleteUserAsync(2);
             //await userService.UpdateUserAsync(user, 2);
         }

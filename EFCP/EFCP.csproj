@@ -18,4 +18,14 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Dlls\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="qvabbytesD1">
+      <HintPath>..\qvabbytesD1\bin\Debug\net9.0\qvabbytesD1.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>
