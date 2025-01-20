@@ -23,8 +23,9 @@ namespace EFCP
 
 
             MenuService menuService = new MenuService();
-            menuService.Menu();
-
+            //menuService.Menu();
+            WordleService wordleService = new WordleService();
+            wordleService.PlayWordle();
 
 
             //var user = new UserDto
