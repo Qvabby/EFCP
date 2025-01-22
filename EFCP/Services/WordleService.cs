@@ -83,7 +83,7 @@ namespace EFCP.Services
                 visualizer.Qprint("That's not a 5 letter word.", "Red");
                 mainEngine(guessword);
             }
-            if(guess_count == 5)
+            if(guess_count == 4)
             {
                 visualizer.Qprint("You lost. The word was " + guessword + ".", "Red");
                 guess_count = 0;
