@@ -1,4 +1,5 @@
-﻿using LeetCode_Problems.Arrays;
+﻿using LeetCode_Problems;
+using LeetCode_Problems.Arrays;
 using LeetCode_Problems.Strings;
 
 //HardArray hardArray = new HardArray();
@@ -10,3 +11,5 @@ using LeetCode_Problems.Strings;
 //{
 //    Console.Write(item);
 //}
+HardProblems hardProblems = new HardProblems();
+hardProblems.SolveNQueens(2);
