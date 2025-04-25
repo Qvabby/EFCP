@@ -53,6 +53,7 @@ namespace EFCP.Services
                         case "1":
                             WordleService wordleService = new WordleService();
                             wordleService.PlayWordle();
+                            await GameMenuAsync().ConfigureAwait(false);
                             break;
                         case "2":
                             break;

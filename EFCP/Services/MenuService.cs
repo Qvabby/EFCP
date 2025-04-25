@@ -55,17 +55,17 @@ namespace EFCP.Services
                         case "1":
                             await _userManagementService.UserManagementMenuAsync();
                             Console.ResetColor();
-                            MenuAsync();
+                            await MenuAsync();
                             break;
                         case "2":
                             await _gameService.GameMenuAsync();
                             Console.ResetColor();
-                            MenuAsync();
+                            await MenuAsync();
                             break;
                         case "3":
                             await _leetCodeProblemsService.LeetCodeProblemsMenuAsync();
                             Console.ResetColor();
-                            MenuAsync();
+                            await MenuAsync();
                             break;
                         case "4":
                             CMW.WriteSuccessMessage("Exiting EFCP. Goodbye :)");

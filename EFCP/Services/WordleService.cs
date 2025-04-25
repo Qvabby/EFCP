@@ -79,6 +79,7 @@ namespace EFCP.Services
         }
         private void mainEngine(string guessword)
         {
+            bool end = false;
             string guess = Console.ReadLine();
             if(guess.Count() != 5)
             {
@@ -89,7 +90,7 @@ namespace EFCP.Services
             {
                 visualizer.Qprint("You lost. The word was " + guessword + ".", "Red");
                 guess_count = 0;
-                PlayWordle();
+                end = true;
             }
             else
             {
@@ -100,7 +101,6 @@ namespace EFCP.Services
                     guess_count = 0;
                     PlayWordle();
                 }
-
                 for (int i = 0; i < guess.Count(); i++)
                 {
                     if (guessword[i].ToString().ToLower() == guess[i].ToString().ToLower())
@@ -115,7 +115,9 @@ namespace EFCP.Services
                     }
                 }
             }
-            mainEngine(guessword);
+            
+            if (!end)
+                mainEngine(guessword);
         }
     }
 }
