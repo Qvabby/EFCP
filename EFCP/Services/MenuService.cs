@@ -25,6 +25,7 @@ namespace EFCP.Services
             //Menu
             try
             {
+                Console.ResetColor();
                 //Menu
                 visualizer.BreakLine(2);
                 visualizer.Qprint("\tEFCP MENU.\t", "Green", "White");

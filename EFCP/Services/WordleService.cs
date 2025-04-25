@@ -49,18 +49,22 @@ namespace EFCP.Services
         int guess_count = 0;
         public void PlayWordle()
         {
+            Console.ResetColor();
             string guess_word = words[random.Next(0, words.Count)];
             visualizer.BreakLine();
-            visualizer.Qprint("Welcome to Wordle.\n", "Green", "White");
-            visualizer.Qprint("You have 5 Guesses.\n", "Red");
-            visualizer.Qprint("press Y to start game. N to quit.", "Yellow");
-            visualizer.BreakLine(1);
+            visualizer.Qprint("\tWelcome to Wordle.\t", "Green", "White");
+            visualizer.BreakLine();
+            visualizer.QprintOnLine("press Y to start game. N to quit: ", "Yellow");
+            
             try
             {
+                Console.ForegroundColor = ConsoleColor.Blue;
                 string c = Console.ReadLine();
+                Console.ResetColor();
                 if (c.ToUpper() == "Y")
                 {
                     visualizer.Qprint("Game started. Guess a 5-letter word.", "White");
+                    visualizer.Qprint("You have 5 Guesses.", "Red");
                     mainEngine(guess_word);
                 }
                 if(c.ToUpper() == "N")
@@ -80,8 +84,11 @@ namespace EFCP.Services
         private void mainEngine(string guessword)
         {
             bool end = false;
+            visualizer.BreakLine();
+            visualizer.QprintOnLine("5-letter word: ", "White");
+            Console.ForegroundColor = ConsoleColor.Blue;
             string guess = Console.ReadLine();
-            if(guess.Count() != 5)
+            if (guess.Count() != 5)
             {
                 visualizer.Qprint("That's not a 5 letter word.", "Red");
                 mainEngine(guessword);

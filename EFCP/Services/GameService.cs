@@ -17,6 +17,7 @@ namespace EFCP.Services
         {
 			try
 			{
+                Console.ResetColor();
                 //Game Menu
                 var options = new List<string> {"1. Wordle", "2. Exit" };
                 var optionsNums = options.Select(x => x.Split('.')[0]).ToList();

@@ -9,8 +9,9 @@
         public void Qprint(string msg)
         {
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine(msg);
+            Console.Write(msg);
             Console.ResetColor();
+            Console.WriteLine("");
         }
         /// <summary>
         /// Print message (custom color)
@@ -20,8 +21,9 @@
         public void Qprint(string msg, string TextColor)
         {
             Console.ForegroundColor = (ConsoleColor)Enum.Parse(typeof(ConsoleColor), TextColor);
-            Console.WriteLine(msg);
+            Console.Write(msg);
             Console.ResetColor();
+            Console.WriteLine("");
         }
         /// <summary>
         /// Print message (custom colors)
@@ -29,12 +31,18 @@
         /// <param name="msg">Text you want to output on console.</param>
         /// <param name="TextColor">Color of Text</param>
         /// <param name="BackgroundColor">Background color</param>
-        public void Qprint(string msg, string TextColor, string BackgroundColor)
+        public void Qprint(string msg, string textColor, string backgroundColor)
         {
-            Console.ForegroundColor = (ConsoleColor)Enum.Parse(typeof(ConsoleColor), TextColor);
-            Console.BackgroundColor = (ConsoleColor)Enum.Parse(typeof(ConsoleColor), BackgroundColor);
-            Console.WriteLine(msg);
+            //Console.ForegroundColor = (ConsoleColor)Enum.Parse(typeof(ConsoleColor), textColor);
+            //Console.BackgroundColor = (ConsoleColor)Enum.Parse(typeof(ConsoleColor), backgroundColor);
+            //Console.WriteLine(msg);
+            //Console.ResetColor();
+            Console.ForegroundColor = (ConsoleColor)Enum.Parse(typeof(ConsoleColor), textColor);
+            Console.BackgroundColor = (ConsoleColor)Enum.Parse(typeof(ConsoleColor), backgroundColor);
+
+            Console.Write(msg);
             Console.ResetColor();
+            Console.WriteLine("");
         }
         /// <summary>
         /// Print Message On Same Line (default green color)
@@ -105,7 +113,7 @@
         /// </summary>
         public void BreakLine()
         {
-            Console.WriteLine(" ");
+            Console.WriteLine();
         }
         /// <summary>
         /// Break Lines In Console
@@ -115,7 +123,7 @@
         {
             for (int i = 0; i < count; i++)
             {
-                Console.WriteLine(" ");
+                Console.WriteLine();
             }
         }
     }
