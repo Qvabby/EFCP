@@ -50,9 +50,11 @@ namespace EFCP.Services
         public void PlayWordle()
         {
             string guess_word = words[random.Next(0, words.Count)];
+            visualizer.BreakLine();
             visualizer.Qprint("Welcome to Wordle.\n", "Green", "White");
             visualizer.Qprint("You have 5 Guesses.\n", "Red");
             visualizer.Qprint("press Y to start game. N to quit.", "Yellow");
+            visualizer.BreakLine(1);
             try
             {
                 string c = Console.ReadLine();

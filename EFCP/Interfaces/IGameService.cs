@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace EFCP.Interfaces
 {
-    public interface IMenuService
+    public interface IGameService
     {
-        public Task MenuAsync();
+        public Task GameMenuAsync();
     }
 }

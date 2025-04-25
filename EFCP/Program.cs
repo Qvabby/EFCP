@@ -4,30 +4,62 @@ using EFCP.models.Dtos;
 using EFCP.models;
 using EFCP.Services;
 using qvabbytesD1;
+using EFCP.Interfaces;
 
 namespace EFCP
 {
     //EFCP - Entity Framework Core Practice
     public class Program
     {
+        /*
+                Classes and Objects X
+                Structs
+                Object-Oriented Programming X
+                Interfaces X
+                Inheritance X
+                Abstract Classes X
+                Type Conversions X
+                Generics
+                Iterators
+                Collections X
+                Delegates & Lambdas
+                Events
+                LINQ
+                Stream API
+                File System API
+             */
+
         static async Task Main(string[] args)
         {
+            ConsoleOutputVisualizer visualizer = new ConsoleOutputVisualizer();
+            visualizer.Qprint("Welcome to the EFCP system.", "Green");
+            visualizer.Qwarning("Keep in mind that the project is UNFINISHED and is just for C#/.NET/EF Core Practicing.\n");
+            //Mapping Configuration
             var mappingConfig = new MapperConfiguration(cfg =>
             {
                 cfg.CreateMap<User, UserDto>().ReverseMap();
             });
-
+            //Mapper
             var mapper = new Mapper(mappingConfig);
+            //DBContext
             EFCPDbContext db = new EFCPDbContext();
-            UserService userService = new UserService(db, mapper);
+            //---------------- Services -----------------
+            //UserService
+            IUserService userService = new UserService(db, mapper);
+            //GameService
+            IGameService gameService = new GameService();
+            //LeetcodeProblemsService
+            ILeetcodeProblemsService leetcodeProblemsService = new LeetcodeProblemsService();
+            //MenuService
+            MenuService menuService = new MenuService(userService,gameService, leetcodeProblemsService);
+            //-------------------------------------------
+            
+
+            await menuService.MenuAsync();
 
 
-            MenuService menuService = new MenuService();
-            //menuService.Menu();
-            WordleService wordleService = new WordleService();
-            wordleService.PlayWordle();
-
-
+            //-------TESTING-----
+            //wordleService.PlayWordle();  
             //var user = new UserDto
             //{
             //    Name = "Jemali2",

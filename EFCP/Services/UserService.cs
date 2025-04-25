@@ -13,7 +13,7 @@ using EFCP.models;
 
 namespace EFCP.Services
 {
-    public class UserService : IUserServiceInterface
+    public class UserService : IUserService
     {
         EFCPDbContext _dbContext;
         IMapper _mapper;
@@ -121,6 +121,11 @@ namespace EFCP.Services
             {
                 _writer.WriteErrorMessage(e.Message);
             }
+        }
+
+        public async Task UserManagementMenuAsync()
+        {
+            throw new NotImplementedException();
         }
     }
 }
