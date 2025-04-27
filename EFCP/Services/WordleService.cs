@@ -47,15 +47,18 @@ namespace EFCP.Services
         };
         Random random = new Random();
         int guess_count = 0;
-        public void PlayWordle()
+        private void WelcomeWorlde()
         {
             Console.ResetColor();
-            string guess_word = words[random.Next(0, words.Count)];
             visualizer.BreakLine();
             visualizer.Qprint("\tWelcome to Wordle.\t", "Green", "White");
             visualizer.BreakLine();
             visualizer.QprintOnLine("press Y to start game. N to quit: ", "Yellow");
-            
+        }
+        public void PlayWordle()
+        {
+            WelcomeWorlde();
+            string guess_word = words[random.Next(0, words.Count)];
             try
             {
                 Console.ForegroundColor = ConsoleColor.Blue;
@@ -106,7 +109,7 @@ namespace EFCP.Services
                 {
                     visualizer.Qprint("You won in " + guess_count + " guesses.", "Green");
                     guess_count = 0;
-                    PlayWordle();
+                    end = true;
                 }
                 for (int i = 0; i < guess.Count(); i++)
                 {
@@ -122,9 +125,9 @@ namespace EFCP.Services
                     }
                 }
             }
-            
-            if (!end)
+            if(!end)
                 mainEngine(guessword);
+
         }
     }
 }

@@ -51,11 +51,11 @@ namespace EFCP
             //LeetcodeProblemsService
             ILeetcodeProblemsService leetcodeProblemsService = new LeetcodeProblemsService();
             //MenuService
-            MenuService menuService = new MenuService(userService,gameService, leetcodeProblemsService);
+            MenuService menuService = new MenuService(userService, gameService, leetcodeProblemsService);
             //-------------------------------------------
             
 
-            await menuService.MenuAsync();
+            await menuService.MenuAsync().ConfigureAwait(true);
 
 
             //-------TESTING-----
