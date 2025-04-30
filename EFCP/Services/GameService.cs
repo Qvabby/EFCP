@@ -19,7 +19,7 @@ namespace EFCP.Services
 			{
                 Console.ResetColor();
                 //Game Menu
-                var options = new List<string> {"1. Wordle", "2. Exit" };
+                var options = new List<string> {"1. Wordle", "2. Go Back" };
                 var optionsNums = options.Select(x => x.Split('.')[0]).ToList();
                 //Printing Menu
 

@@ -10,6 +10,8 @@ using System.Text;
 using System.Threading.Tasks;
 using EFCP.Data;
 using EFCP.models;
+using qvabbytesD1;
+using EFCP.HelperMethods;
 
 namespace EFCP.Services
 {
@@ -17,8 +19,13 @@ namespace EFCP.Services
     {
         EFCPDbContext _dbContext;
         IMapper _mapper;
+        //Console Visualizers.
         ConsoleMessagesWriter _writer = new ConsoleMessagesWriter();
-        public UserService(EFCPDbContext dbcontext, IMapper mapper) { _dbContext = dbcontext; _mapper = mapper; }
+        ConsoleOutputVisualizer _visualizer;
+        //---ctor
+        public UserService(EFCPDbContext dbcontext, IMapper mapper) { _dbContext = dbcontext; _mapper = mapper; _visualizer = new ConsoleOutputVisualizer(); }
+
+        //--------------------CRUD OPERATIONS
         public async Task AddUserAsync(UserDto userDto)
         {
             try
@@ -33,7 +40,6 @@ namespace EFCP.Services
                 _writer.WriteErrorMessage(e.Message);
             }
         }
-
         public async Task DeleteUserAsync(int id)
         {
             try
@@ -55,7 +61,6 @@ namespace EFCP.Services
             }
 
         }
-
         public async Task<UserDto> GetUserAsync(int id)
         {
             try
@@ -77,7 +82,6 @@ namespace EFCP.Services
             }
             return null;
         }
-
         public async Task<List<UserDto>> GetUsersAsync()
         {
             try
@@ -97,7 +101,6 @@ namespace EFCP.Services
             }
             return null;
         }
-
         public async Task UpdateUserAsync(UserDto userDto, int id)
         {
             try
@@ -123,7 +126,79 @@ namespace EFCP.Services
             }
         }
 
+        //---------------------EXPORTING OPERATORS
+        public Task ExportUserCSV(string path, int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task ExportUsersCSV(string path)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task ExportUsersTXT(string path)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task ExportUsersXML(string path)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task ExportUserTXT(string path, int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task ExportUserXML(string path, int id)
+        {
+            throw new NotImplementedException();
+        }
+
+
+        //---------------------MENU
         public async Task UserManagementMenuAsync()
+        {
+            //Implement Helping Methods.
+            MenuHelperMethods menuHelperMethods = new MenuHelperMethods(_visualizer);
+            //Print Menu
+            _visualizer.Qprint("User Management Menu", "Green");
+            var optionsNums = menuHelperMethods.printMenuOptions(new List<string> { "1. CRUD (Add/Read/Update/Delete)", "2. Export(TXT/CSV/XML)", "3. Go Back" });
+            _visualizer.BreakLine();
+            _visualizer.QprintOnLine("Select an option: ", "White");
+            Console.ForegroundColor = ConsoleColor.Blue;
+            var input = Console.ReadLine();
+            Console.ResetColor();
+            //Check if input is valid.
+            if (!menuHelperMethods.isValidInput(input, optionsNums))
+            {
+                _writer.WriteErrorMessage("Invalid input. Please try again.");
+                await UserManagementMenuAsync();
+            }
+            //Calling the corresponding service based on the input.
+            switch (input)
+            {
+                //CRUD
+                case "1":
+
+                    break;
+                //Export
+                case "2":
+
+                    break;
+                //Go Back
+                case "3":
+                    break;
+
+                default:
+                    break;
+            }
+
+
+        }
+        public Task ExportMenuAsync()
         {
             throw new NotImplementedException();
         }
