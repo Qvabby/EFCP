@@ -28,14 +28,13 @@ namespace EFCP.Services
             //Menu
             try
             {
+                Console.Clear();
                 //implementing helping Methods.
                 menuHelperMethods = new MenuHelperMethods(visualizer);
                 //Welcome message
                 Console.ResetColor();
                 //Menu
-                visualizer.BreakLine(2);
-                visualizer.Qprint("\tEFCP MENU.\t", "Green", "White");
-                visualizer.BreakLine(1);
+                visualizer.Qprint("EFCP Menu", "Green", "White");
                 //printing menu options
                 var optionsNums = menuHelperMethods.printMenuOptions(new List<string> { "1. User Management", "2. Games", "3. LeetCode Problems", "4. Exit" });
 

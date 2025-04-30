@@ -24,16 +24,13 @@ namespace EFCP
                 Collections X
                 Delegates & Lambdas
                 Events
-                LINQ
+                LINQ X
                 Stream API
                 File System API
              */
 
         static async Task Main(string[] args)
         {
-            ConsoleOutputVisualizer visualizer = new ConsoleOutputVisualizer();
-            visualizer.Qprint("Welcome to the EFCP system.", "Green");
-            visualizer.Qwarning("Keep in mind that the project is UNFINISHED and is just for C#/.NET/EF Core Practicing.\n");
             //Mapping Configuration
             var mappingConfig = new MapperConfiguration(cfg =>
             {

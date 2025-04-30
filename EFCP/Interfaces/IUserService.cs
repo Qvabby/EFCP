@@ -24,6 +24,7 @@ namespace EFCP.Interfaces
 
         public Task UserManagementMenuAsync();
         public Task ExportMenuAsync();
+        public Task CRUDMenuAsync();
 
     }
 }

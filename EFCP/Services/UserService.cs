@@ -161,44 +161,57 @@ namespace EFCP.Services
         //---------------------MENU
         public async Task UserManagementMenuAsync()
         {
-            //Implement Helping Methods.
-            MenuHelperMethods menuHelperMethods = new MenuHelperMethods(_visualizer);
-            //Print Menu
-            _visualizer.Qprint("User Management Menu", "Green");
-            var optionsNums = menuHelperMethods.printMenuOptions(new List<string> { "1. CRUD (Add/Read/Update/Delete)", "2. Export(TXT/CSV/XML)", "3. Go Back" });
-            _visualizer.BreakLine();
-            _visualizer.QprintOnLine("Select an option: ", "White");
-            Console.ForegroundColor = ConsoleColor.Blue;
-            var input = Console.ReadLine();
-            Console.ResetColor();
-            //Check if input is valid.
-            if (!menuHelperMethods.isValidInput(input, optionsNums))
+            try
             {
-                _writer.WriteErrorMessage("Invalid input. Please try again.");
+                Console.Clear();
+                //Implement Helping Methods.
+                MenuHelperMethods menuHelperMethods = new MenuHelperMethods(_visualizer);
+                //Print Menu
+                _visualizer.Qprint("USER MANAGEMENT Menu", "Green", "White");
+                var optionsNums = menuHelperMethods.printMenuOptions(new List<string> { "1. CRUD (Add/Read/Update/Delete)", "2. Export(TXT/CSV/XML)", "3. Go Back" });
+                _visualizer.BreakLine();
+                _visualizer.QprintOnLine("Select an option: ", "White");
+                Console.ForegroundColor = ConsoleColor.Blue;
+                var input = Console.ReadLine();
+                Console.ResetColor();
+                _visualizer.BreakLine();
+                //Check if input is valid.
+                if (!menuHelperMethods.isValidInput(input, optionsNums))
+                {
+                    _writer.WriteErrorMessage("Invalid input. Please try again.");
+                    await UserManagementMenuAsync();
+                }
+                //Calling the corresponding service based on the input.
+                switch (input)
+                {
+                    //CRUD
+                    case "1":
+                        await CRUDMenuAsync();
+                        break;
+                    //Export
+                    case "2":
+                        await ExportMenuAsync();
+                        break;
+                    //Go Back
+                    case "3":
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+            catch (Exception e)
+            {
+                _writer.WriteErrorMessage(e.Message);
                 await UserManagementMenuAsync();
             }
-            //Calling the corresponding service based on the input.
-            switch (input)
-            {
-                //CRUD
-                case "1":
-
-                    break;
-                //Export
-                case "2":
-
-                    break;
-                //Go Back
-                case "3":
-                    break;
-
-                default:
-                    break;
-            }
-
-
         }
         public Task ExportMenuAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task CRUDMenuAsync()
         {
             throw new NotImplementedException();
         }
