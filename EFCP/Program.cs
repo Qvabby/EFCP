@@ -22,7 +22,7 @@ namespace EFCP
                 Generics
                 Iterators
                 Collections X
-                Delegates & Lambdas
+                Delegates & Lambdas X
                 Events
                 LINQ X
                 Stream API
