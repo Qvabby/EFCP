@@ -10,9 +10,11 @@ namespace LeetCode_Problems.Strings
     {
         public IList<string> FullJustify(string[] words, int maxWidth)
         {
+            Console.WriteLine("Inside a FullJustify");
             List<string> result = new List<string>();
             for (int i = 0; i < words.Length; i++)
             {
+                Console.WriteLine($"Loop i={i}, word={words[i]}, result.Count={result.Count}");
                 //first word automatically added.
                 if (i == 0 && i != words.Length - 1) { result.Add(words[i]); continue; }
 
@@ -139,6 +141,10 @@ namespace LeetCode_Problems.Strings
                 }
             }
 
+            //foreach (var item in result)
+            //{
+            //    Console.Write(item);
+            //}
             return result;
         }
 

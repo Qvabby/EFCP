@@ -75,8 +75,8 @@ namespace EFCP.Services
         private async Task DemoProblemAsync(string selectedProblem)
         {
             visualizer.Qprint($"You selected: {selectedProblem}", "Yellow");
-            var SP = status.ProblemsAndStatus[selectedProblem];
-            if (SP.Item1 == false)
+            var (isSolved, meta) = status.ProblemsAndStatus[selectedProblem];
+            if (!isSolved)
             {
                 visualizer.Qprint("This problem is not solved yet.", "Red");
                 var optionsNumsDem = menuHelperMethods.printMenuOptions(new List<string> { "1. Go Back" });
@@ -118,6 +118,53 @@ namespace EFCP.Services
                         //implement the logic to demonstrate the problem.
                         visualizer.Qprint($"Demonstrating {selectedProblem}...", "Green");
                         //call a method that runs the solution for this problem.
+
+                        var userInputs = new string[meta.ParameterPrompts.Length];
+                        for (int i = 0; i < meta.ParameterPrompts.Length; i++)
+                        {
+                            visualizer.QprintOnLine(meta.ParameterPrompts[i], "White");
+                            Console.ForegroundColor = ConsoleColor.Blue;
+                            userInputs[i] = Console.ReadLine();
+                            visualizer.BreakLine();
+                            Console.ResetColor();
+                        }
+
+                        //Parsing inputs
+                        try
+                        {
+                            visualizer.Qprint("Parsing inputs...", "Yellow");
+                            var parameters = meta.ParseInputs(userInputs);
+                            visualizer.Qprint("Invoking delegate...", "Yellow");
+                            var result = meta.ProblemDelegate.DynamicInvoke(parameters);
+                            visualizer.Qprint("Delegate invoked.", "Yellow");
+
+                            //Display result.
+                            if (result is IEnumerable<string> stringList)
+                            {
+                                visualizer.Qprint("Result:", "Green");
+                                foreach (var line in stringList)
+                                    visualizer.Qprint(line, "Yellow");
+                            }
+                            else if (result is IEnumerable<IEnumerable<string>> listOfLists)
+                            {
+                                visualizer.Qprint("Result:", "Green");
+                                foreach (var list in listOfLists)
+                                    visualizer.Qprint(string.Join(", ", list), "Yellow");
+                            }
+                            else
+                            {
+                                visualizer.Qprint($"Result: {result.ToString()}", "Yellow");
+                            }
+                            visualizer.Qprint("Press any key to go back to the menu.", "White");
+                            Console.ReadLine();
+                        }
+                        catch (Exception e)
+                        {
+                            CMW.WriteErrorMessage($"An error occurred while displaying the game menu. Error Message: {e.Message}\nInner:{e.InnerException.Message} ");
+
+                            await DemoProblemAsync(selectedProblem);
+                        }
+
                         //await RunDemoAsync(selectedProblem);
                         break;
                     case "2":

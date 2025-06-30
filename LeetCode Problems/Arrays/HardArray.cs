@@ -21,7 +21,7 @@ namespace LeetCode_Problems.Arrays
             //Input: nums1 = [1, 2], nums2 = [3, 4]
             //Output: 2.50000
             //Explanation: merged array = [1, 2, 3, 4] and median is (2 + 3) / 2 = 2.5.
-
+            Console.WriteLine("Inside findMedianSortedArrays");
             int[] merged = new int[nums1.Length + nums2.Length];
             bool firstMore = nums1.Length > nums2.Length;
             for (int i = 0; i < merged.Length; i++)
