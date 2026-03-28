@@ -17,6 +17,14 @@ namespace EFCP.Services
         MenuHelperMethods menuHelperMethods;
         Status status = new Status();
 
+        /// <summary>
+        /// Displays the interactive menu for managing LeetCode problems, allowing the user to view solved problems,
+        /// problems in progress, profile information, or return to the previous menu.
+        /// </summary>
+        /// <remarks>The method prompts the user for input and validates the selection. If an invalid
+        /// option is entered or an error occurs, the menu is redisplayed until a valid selection is made. The method is
+        /// intended to be called from a console application and relies on user interaction.</remarks>
+        /// <returns>A task that represents the asynchronous operation of displaying and handling the LeetCode problems menu.</returns>
         public async Task LeetCodeProblemsMenuAsync()
         {
             try
@@ -49,7 +57,7 @@ namespace EFCP.Services
                             break;
 
                         case "2":
-
+                            await ShowSolvingProblemsAsync();
                             break;
 
                         case "3":
@@ -72,8 +80,21 @@ namespace EFCP.Services
             }
         }
 
+        /// <summary>
+        /// Displays an interactive menu for the specified problem, allowing the user to view its status or demonstrate
+        /// its solution if available.
+        /// </summary>
+        /// <remarks>If the problem is not solved, only a 'Go Back' option is presented. If the problem is
+        /// solved, the user can choose to demonstrate the solution or go back. Invalid user input will prompt the menu
+        /// again. This method is intended for use within a console-based application and relies on user input from the
+        /// console.</remarks>
+        /// <param name="selectedProblem">The name of the problem to display and interact with. Must correspond to a valid problem in the current
+        /// status.</param>
+        /// <returns>A task that represents the asynchronous operation of displaying and handling the problem menu.</returns>
         private async Task DemoProblemAsync(string selectedProblem)
         {
+            var SolvedProblems = await GetProblemsList(0);
+
             visualizer.Qprint($"You selected: {selectedProblem}", "Yellow");
             var (isSolved, meta) = status.ProblemsAndStatus[selectedProblem];
             if (!isSolved)
@@ -94,7 +115,11 @@ namespace EFCP.Services
                 }
                 if (input == "1")
                 {
-                    await ShowSolvedProblemsAsync();
+                    if (SolvedProblems.Contains(selectedProblem))
+                    {
+                        await ShowSolvedProblemsAsync();
+                    }
+                    await ShowSolvingProblemsAsync();
                 }
             }
             else
@@ -168,7 +193,11 @@ namespace EFCP.Services
                         //await RunDemoAsync(selectedProblem);
                         break;
                     case "2":
-                        await ShowSolvedProblemsAsync();
+                        if (SolvedProblems.Contains(selectedProblem))
+                        {
+                            await ShowSolvedProblemsAsync();
+                        }
+                        await ShowSolvingProblemsAsync();
                         break;
                     default:
                         CMW.WriteErrorMessage("Invalid input. Please try again.");
@@ -178,6 +207,14 @@ namespace EFCP.Services
             }
         }
 
+        /// <summary>
+        /// Displays a menu of solved LeetCode problems and allows the user to select and view details for a specific
+        /// problem asynchronously.
+        /// </summary>
+        /// <remarks>The method presents only problems marked as solved. If the user selects a problem,
+        /// its details are shown; if the user chooses to go back, the main problems menu is displayed. Input validation
+        /// is performed, and the menu is re-displayed on invalid input or error.</remarks>
+        /// <returns>A task that represents the asynchronous operation of displaying and handling the solved problems menu.</returns>
         private async Task ShowSolvedProblemsAsync()
         {
             try
@@ -185,7 +222,7 @@ namespace EFCP.Services
                 //Printing Menu
                 visualizer.Qprint("Leetcode Problems.", "Green", "White");
                 //Leetcode Problems Menu
-                var problemKeys = status.ProblemsAndStatus.Keys.Where(key => status.ProblemsAndStatus[key].Item1 == true).ToList();
+                var problemKeys = await GetProblemsList(0);
                 var options = problemKeys.Select((key, index) => $"{index + 1}. {key}").ToList();
                 options.Add($"{options.Count + 1}. Go Back");
                 var optionsNums = menuHelperMethods.printMenuOptions(options);
@@ -218,6 +255,64 @@ namespace EFCP.Services
                 CMW.WriteErrorMessage($"An error occurred while displaying the game menu. Error Message: {e.Message}\nInner:{e.InnerException.Message} ");
                 await ShowSolvedProblemsAsync();
             }
+        }
+
+        private async Task ShowSolvingProblemsAsync()
+        {
+            try
+            {
+                //Printing Menu
+                visualizer.Qprint("Leetcode Problems.", "Green", "White");
+                //Leetcode Problems Menu
+                var problemKeys = await GetProblemsList(-1);
+                var options = problemKeys.Select((key, index) => $"{index + 1}. {key}").ToList();
+                options.Add($"{options.Count + 1}. Go Back");
+                var optionsNums = menuHelperMethods.printMenuOptions(options);
+
+                visualizer.QprintOnLine("\nSelect an option: ", "White");
+                Console.ForegroundColor = ConsoleColor.Blue;
+                var input = Console.ReadLine();
+                visualizer.BreakLine();
+                Console.ResetColor();
+
+                if (!menuHelperMethods.isValidInput(input, optionsNums))
+                {
+                    CMW.WriteErrorMessage("Invalid input. Please try again.");
+                    await ShowSolvedProblemsAsync();
+                }
+
+                int selectedIndex = int.Parse(input) - 1;
+
+                if (selectedIndex == problemKeys.Count)
+                {
+                    await LeetCodeProblemsMenuAsync();
+                }
+
+                string selectedProblem = problemKeys[selectedIndex];
+
+                await DemoProblemAsync(selectedProblem);
+            }
+            catch (Exception e)
+            {
+                CMW.WriteErrorMessage($"An error occurred while displaying the game menu. Error Message: {e.Message}\nInner:{e.InnerException.Message} ");
+                await ShowSolvedProblemsAsync();
+            }
+            
+        }
+        /// <summary>
+        /// Retrieves a list of problem identifiers filtered by their solved status.
+        /// </summary>
+        /// <param name="SolvedOrSolving">A value indicating which problems to include. If greater than or equal to 0, only solved problems are
+        /// returned; otherwise, only unsolved problems are returned.</param>
+        /// <returns>A list of strings containing the identifiers of the problems that match the specified solved status. The
+        /// list is empty if no problems match the criteria.</returns>
+        private async Task<List<string>> GetProblemsList(short SolvedOrSolving)
+        {
+            if (SolvedOrSolving >= 0) 
+            {
+                return status.ProblemsAndStatus.Keys.Where(key => status.ProblemsAndStatus[key].Item1 == true).ToList();
+            }
+                return status.ProblemsAndStatus.Keys.Where(key => status.ProblemsAndStatus[key].Item1 == false).ToList();
         }
     }
 }
