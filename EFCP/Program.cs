@@ -8,6 +8,7 @@ using qvabbytesD1;
 using EFCP.Interfaces;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace EFCP
 {
@@ -34,6 +35,9 @@ namespace EFCP
 
         static async Task Main(string[] args)
         {
+            //DBContext
+            await using var db = new EFCPDbContext();
+
             //Mapping Configuration
             var configExpression = new MapperConfigurationExpression();
             configExpression.CreateMap<User, UserDto>().ReverseMap();
@@ -41,9 +45,11 @@ namespace EFCP
             var mappingConfig = new MapperConfiguration(configExpression, log);
             //Mapper
             var mapper = mappingConfig.CreateMapper();
-            //DBContext
-            EFCPDbContext db = new EFCPDbContext();
+            
             //---------------- Services -----------------
+            //var services = new ServiceCollection();    <--- More professional.
+            //services.AddDbContext<EFCPDbContext>();
+
             //UserService
             IUserService userService = new UserService(db, mapper);
             //GameService
@@ -51,11 +57,9 @@ namespace EFCP
             //LeetcodeProblemsService
             ILeetcodeProblemsService leetcodeProblemsService = new LeetcodeProblemsService();
             //MenuService
-            MenuService menuService = new MenuService(userService, gameService, leetcodeProblemsService);
-            //-------------------------------------------
-            
-
-            await menuService.MenuAsync().ConfigureAwait(true);
+            var menuService = new MenuService(userService, gameService, leetcodeProblemsService);
+            //StartEFCP
+            await menuService.MenuAsync();
 
 
             //-------TESTING-----
