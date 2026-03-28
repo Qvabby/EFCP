@@ -1,10 +1,13 @@
 ﻿using AutoMapper;
+using AutoMapper.Configuration;
 using EFCP.Data;
 using EFCP.models.Dtos;
 using EFCP.models;
 using EFCP.Services;
 using qvabbytesD1;
 using EFCP.Interfaces;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace EFCP
 {
@@ -32,12 +35,12 @@ namespace EFCP
         static async Task Main(string[] args)
         {
             //Mapping Configuration
-            var mappingConfig = new MapperConfiguration(cfg =>
-            {
-                cfg.CreateMap<User, UserDto>().ReverseMap();
-            });
+            var configExpression = new MapperConfigurationExpression();
+            configExpression.CreateMap<User, UserDto>().ReverseMap();
+            var log = LoggerFactory.Create(x => x.Services.AddLogging());
+            var mappingConfig = new MapperConfiguration(configExpression, log);
             //Mapper
-            var mapper = new Mapper(mappingConfig);
+            var mapper = mappingConfig.CreateMapper();
             //DBContext
             EFCPDbContext db = new EFCPDbContext();
             //---------------- Services -----------------

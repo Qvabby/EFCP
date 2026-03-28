@@ -4,11 +4,25 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="Qvabbyte.py\.idea\**" />
+    <Compile Remove="Qvabbyte.py\.venv\**" />
+    <EmbeddedResource Remove="Qvabbyte.py\.idea\**" />
+    <EmbeddedResource Remove="Qvabbyte.py\.venv\**" />
+    <None Remove="Qvabbyte.py\.idea\**" />
+    <None Remove="Qvabbyte.py\.venv\**" />
+  </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Python.Runtime" Version="3.0.1" />
+    <PackageReference Include="Python.Runtime" Version="2.7.9" />
     <Content Include="sample.py">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Python.Runtime">
+      <HintPath>..\Qvabbyte\PythonNet\pythonnet\runtime\Python.Runtime.dll</HintPath>
+    </Reference>
   </ItemGroup>
 </Project>

@@ -99,7 +99,7 @@ namespace EFCP.Services
             }
             else
             {
-                var optionsNumsDem = menuHelperMethods.printMenuOptions(new List<string> { "1. Demonstrate, 2. Go Back" });
+                var optionsNumsDem = menuHelperMethods.printMenuOptions(new List<string> { "1. Demonstrate", "2. Go Back" });
 
                 visualizer.QprintOnLine("\nSelect an option: ", "White");
                 Console.ForegroundColor = ConsoleColor.Blue;
@@ -185,9 +185,9 @@ namespace EFCP.Services
                 //Printing Menu
                 visualizer.Qprint("Leetcode Problems.", "Green", "White");
                 //Leetcode Problems Menu
-                var problemKeys = status.ProblemsAndStatus.Keys.ToList();
-                var options = status.ProblemsAndStatus.Keys.Select((key, index) => $"{index + 1}. {key}").ToList();
-                options.Add("4. Go Back");
+                var problemKeys = status.ProblemsAndStatus.Keys.Where(key => status.ProblemsAndStatus[key].Item1 == true).ToList();
+                var options = problemKeys.Select((key, index) => $"{index + 1}. {key}").ToList();
+                options.Add($"{options.Count + 1}. Go Back");
                 var optionsNums = menuHelperMethods.printMenuOptions(options);
 
                 visualizer.QprintOnLine("\nSelect an option: ", "White");

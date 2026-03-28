@@ -14,7 +14,7 @@ namespace LeetCode_Problems.Strings
             List<string> result = new List<string>();
             for (int i = 0; i < words.Length; i++)
             {
-                Console.WriteLine($"Loop i={i}, word={words[i]}, result.Count={result.Count}");
+                //Console.WriteLine($"Loop i={i}, word={words[i]}, result.Count={result.Count}");
                 //first word automatically added.
                 if (i == 0 && i != words.Length - 1) { result.Add(words[i]); continue; }
 
